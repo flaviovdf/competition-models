@@ -27,7 +27,13 @@ LASTFM_ARTIST_NAMES = relative_fpath_opt(os.path.join('db', \
 TWITTER_MOVIE_NAMES = relative_fpath_opt(os.path.join('db', \
         'twitter_movie.ids'))
 TWITTER_GENRES_NAMES = relative_fpath_opt(os.path.join('db', \
-        'twitter_genres.ids'))
+        'twitter_genre.ids'))
+
+TABLES = (LASTFM_ARTIST_TABLE, LASTFM_SONG_TABLE, \
+        TWITTER_MOVIE_TABLE, TWITTER_GENRE_TABLE)
+
+#Tseries folder
+TSERIES_FOLDER = relative_fpath_opt('tseries')
 
 #Where we keep the raw datasets
 RAW_DATA_FPATH = relative_fpath_opt('raw_data')
@@ -42,3 +48,6 @@ MOVIE_TWEETS_FOLDER = relative_fpath_opt(os.path.join(RAW_DATA_FPATH, \
         'movie_tweets'))
 MOVIE_TWEETS_ORIGINAL = os.path.join(MOVIE_TWEETS_FOLDER, 'ratings.dat')
 MOVIE_INFO_ORIGINAL = os.path.join(MOVIE_TWEETS_FOLDER, 'movies.dat')
+
+#Plots
+PLOTS_FOLDER = relative_fpath_opt('plots')
