@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import division, print_function
 
+from sklearn import linear_model
 from matplotlib import pyplot as plt
 
 import numpy as np
@@ -43,8 +44,12 @@ def main(ids_fpath, rates_fpath, plays_fpath):
         play = plays[name_to_mb[artist]]
     
         lifetime = (play / rate)
-    
-        idx_sorted = play.argsort()
+        
+        ols = linear_model.LinearRegression(fit_intercept=True)
+        ols.fit(np.array([lifetime]).T, play)
+        regr = ols.predict(np.array([sorted(lifetime)]).T)
+
+        idx_sorted = lifetime.argsort()
         bin_size = int(idx_sorted.shape[0] / n_bins)
     
         mean_lifetime = []
@@ -64,6 +69,8 @@ def main(ids_fpath, rates_fpath, plays_fpath):
         plt.subplot(2, 3, i + 1)
         plt.title(artist)
         plt.semilogy(lifetime, play, 'wo')
+        plt.semilogy(sorted(lifetime), regr, 'k-')
+
         plt.semilogy(mean_lifetime, mean_plays, 'bo')
         plt.semilogy(mean_lifetime, mean_plays, 'b-', label='Mean')
     
