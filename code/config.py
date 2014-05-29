@@ -6,7 +6,8 @@ from __future__ import division, print_function
 
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+#BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = '/Users/flaviov/workspace/competition'
 relative_fpath_opt = lambda fpath: os.path.join(BASE_DIR, fpath)
 
 #DB config

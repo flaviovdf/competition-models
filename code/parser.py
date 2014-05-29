@@ -128,4 +128,4 @@ def convert(date_user_obj_name, table_fpath, table_name, ids_fpath, mode='a'):
 
     with open(ids_fpath, 'w') as ids_file:
         for key in names:
-            print(key, names[key], sep='\t', file=ids_file)
+            print(key, names[key].strip(), sep='\t', file=ids_file)

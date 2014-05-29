@@ -2,22 +2,21 @@
 from __future__ import division, print_function
 
 from .config import DB_FOLDER 
-from .config import DB_FPATH 
-from .config import TSERIES_FOLDER 
-
-from numbers import Number
+from .config import DB_FPATH
 
 import numpy as np
 import os
 import pandas as pd
 import tables
 
+NANO = 10 ** 9
+
 def _to_pandas(time_stamps):
     time_series = {}
     for key in time_stamps:
         ticks = np.asarray(time_stamps[key])
-        index = pd.to_datetime(ticks, unit='s')
-        time_series[key] = pd.Series(np.ones(len(ticks)), index=index)
+        index = pd.DatetimeIndex(ticks * NANO)
+        time_series[key] = pd.Series(np.ones(ticks.shape[0]), index=index)
     return time_series
 
 def my_grep(name2ids, text):
