@@ -79,7 +79,7 @@ def main(table_name, top_k_users=10, top_k_series=5, window='M'):
             #df.plot(ax=ax)
             #ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.12),
             #            ncol=df.shape[1] // 2)
-            ax.legend(loc='upper left')#, bbox_to_anchor=(1, 0.5))
+            ax.legend(loc='upper left', bbox_to_anchor=(1, 0.5))
             ax.set_xticklabels([x.strftime('%m/%y') for x in df.index])
             
             out_folder = config.PLOTS_FOLDER

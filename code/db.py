@@ -136,10 +136,15 @@ def iter_sorted(table_name):
     '''
     with tables.open_file(DB_FPATH, 'r') as tables_file:
         table = tables_file.get_node('/', table_name)
-
+        
+        last_seen = {}
         for row in table.itersorted('date'):
             tstamp = row['date']
             user = row['user_id']
             obj = row['object_id']
-
+            
+            if (user, obj) in last_seen and last_seen[user, obj] == tstamp:
+                continue
+            
+            last_seen[(user, obj)] = tstamp
             yield tstamp, user, obj
