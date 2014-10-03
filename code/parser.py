@@ -6,6 +6,7 @@ from .common import ContiguousID
 from .config import BRIGHTKITE_ORIGINAL
 
 from .config import LASTFM_ORIGINAL
+from .config import LASTFM_OUR_ORIGINAL
 
 from .config import MOVIE_TWEETS_ORIGINAL
 from .config import MOVIE_INFO_ORIGINAL
@@ -175,6 +176,37 @@ def movies_iter_triples(use_genre=False):
             else:
                 yield rating_timestamp, user_id, movie_id, names[movie_id]
 
+
+def lfm_our_iter_triples(use_songs=False):
+    '''
+    Iterates over our lastfm dataset file and returns a generator.
+    Each row in the generator is: (timestamp, user, content, content_name)
+
+    Parameters
+    ----------
+    use_songs : bool (defaults to False)
+        If True, content will be songs. If False, content will be artists.
+    '''
+
+    with open(LASTFM_OUR_ORIGINAL) as triples_file:
+        for line in triples_file:
+            spl = line.strip().split('\t')
+            print(spl)
+            user = spl[0]
+            tstamp_seconds = int(spl[4])
+            artist = spl[5]
+            song = spl[6]
+
+            if use_songs:
+                content = song
+                content_name = song
+            else:
+                content = artist
+                content_name = artist
+            
+            if content.strip():
+                yield tstamp_seconds, user, content, content_name
+
 def lfm_iter_triples(use_songs=False):
     '''
     Iterates over the lastfm dataset file and returns a generator.
@@ -242,7 +274,7 @@ def convert(date_user_obj_name, table_fpath, table_name, ids_fpath, mode='a'):
     h5_file = tables.open_file(table_fpath, mode)
     table = h5_file.create_table('/', table_name, UserObject)
     
-    for date, user, obj, obj_name in date_user_obj_name:
+    for date, user, obj, obj_name in sorted(date_user_obj_name):
         user_id = user_ids[user]
         object_id = object_ids[obj]
         names[object_id] = obj_name

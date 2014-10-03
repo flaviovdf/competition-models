@@ -66,9 +66,11 @@ def three_plots(data, xlabel, fpath, discrete=True, xmin=None):
     if discrete:
         counts = np.bincount(data)
         xvals = np.arange(counts.shape[0]) + 1
-        plt.loglog(xvals, counts, 'wo', ms=3)
+        plt.loglog(xvals, counts, 'k-')
+        #plt.loglog(xvals, counts, 'wo', ms=3)
     else:
-        plt.loglog(x, hist, 'wo', ms=3)
+        plt.loglog(x, hist, 'k-')
+        #plt.loglog(x, hist, 'wo', ms=3)
 
     plt.subplot(132)
     plt.xlabel(xlabel, labelpad=0)

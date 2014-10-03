@@ -117,14 +117,14 @@ def get_user_timeseries(table_name):
 
     time_stamps = {}
     for tstamp, user, obj in iter_sorted(table_name):
-        if obj not in time_stamps:
+        if user not in time_stamps:
             time_stamps[user] = []
 
         time_stamps[user].append(tstamp)
 
     return _to_pandas(time_stamps)
 
-def iter_sorted(table_name):
+def iter_sorted(table_name, where=None):
     '''
     Returns a generator that iters through the table sorted
     by date
@@ -133,12 +133,19 @@ def iter_sorted(table_name):
     ----------
     table_name : str
         the table to iterate
+    where : str
+        query condition
     '''
     with tables.open_file(DB_FPATH, 'r') as tables_file:
         table = tables_file.get_node('/', table_name)
         
+        if where:
+            rows = table.where(where)
+        else:
+            rows = table.itersorted('date')
+
         last_seen = {}
-        for row in table.itersorted('date'):
+        for row in rows:
             tstamp = row['date']
             user = row['user_id']
             obj = row['object_id']
