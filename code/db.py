@@ -124,6 +124,35 @@ def get_user_timeseries(table_name):
 
     return _to_pandas(time_stamps)
 
+def filter_release(table_name, release_date, delta_str='60D'):
+    '''
+    Filters a database before and after a given date
+    
+    Parameters
+    ----------
+    table_name : str
+        the table to filter
+    release_date : int
+        the date to filter before and after (seconds from epoch)
+    delta_str: str
+        the delta before and after to filter (e.g., 60D)
+    '''
+
+    delta = float(pd.to_timedelta(delta_str) / 1e9)
+    
+    before_start = release_date - delta
+    after_end = release_date + delta
+    
+    query = '(date > %f) & (date <= %f)'
+    
+    before = query % (before_start, release_date)
+    after = query % (release_date, after_end)
+    
+    before_release = [x for x in iter_sorted(table_name, before)]
+    after_release = [x for x in iter_sorted(table_name, after)]
+    
+    return before_release, after_release
+
 def iter_sorted(table_name, where=None):
     '''
     Returns a generator that iters through the table sorted

@@ -188,22 +188,6 @@ def christos_scatter_smooth(before, after, obj, invert=False):
     plt.savefig('before_after_scatter.png')
     plt.close()
 
-def filter_release(table_name, release_date, delta_str='60D'):
-    
-    delta = float(pd.to_timedelta(delta_str) / 1e9)
-    
-    before_start = release_date - delta
-    after_end = release_date + delta
-    
-    query = '(date > %f) & (date <= %f)'
-    
-    before = query % (before_start, release_date)
-    after = query % (release_date, after_end)
-    
-    before_release = [x for x in db.iter_sorted(table_name, before)]
-    after_release = [x for x in db.iter_sorted(table_name, after)]
-    
-    return before_release, after_release
 
 def main():
     releases = {
@@ -217,7 +201,7 @@ def main():
     
     obj_name = 'Radiohead'
     id2name, name2id = db.get_mappings('lastfm_artist')
-    before, after = filter_release('lastfm_artist', releases[obj_name])
+    before, after = db.filter_release('lastfm_artist', releases[obj_name])
     
     christos_scatter(before, after, name2id[obj_name])
     christos_scatter_smooth(before, after, name2id[obj_name])

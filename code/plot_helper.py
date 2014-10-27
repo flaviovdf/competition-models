@@ -15,8 +15,8 @@ def initialize_matplotlib():
     inches_per_pt = 1.0 / 72.27 
     golden_mean = (np.sqrt(5) - 1.0) / 2.0 
     
-    fig_width = 2 * 240.0 * inches_per_pt
-    fig_height = .25 * fig_width
+    fig_width = 240.0 * inches_per_pt
+    fig_height = 1 * fig_width
 
     rc('axes', labelsize=8) 
     rc('axes', titlesize=7) 
